@@ -132,12 +132,21 @@ When refactoring an agent:
 
 ---
 
+## Refactored Services (Single AI Call)
+
+| Service | Before | After | Moved To | Utils Extracted | Status |
+|---------|--------|-------|----------|-----------------|--------|
+| `wireframe_service.py` | 359 lines (studio_services/) | 173 lines | `ai_services/` | `excalidraw_utils.py` (120 lines) | Done |
+
+---
+
 ## Shared Utilities
 
 | Utility | Location | Purpose | Used By |
 |---------|----------|---------|---------|
-| `get_source_content()` | `app/utils/source_content_utils.py` | Load source content with smart sampling for large sources | blog_agent, website_agent |
+| `get_source_content()` | `app/utils/source_content_utils.py` | Load source content with smart sampling for large sources | blog_agent, website_agent, wireframe_service |
 | `get_source_name()` | `app/utils/source_content_utils.py` | Get source name by ID | (available) |
+| `convert_to_excalidraw_elements()` | `app/utils/excalidraw_utils.py` | Convert simplified elements to Excalidraw format | wireframe_service |
 
 ---
 
@@ -168,3 +177,30 @@ user_message = config.get("user_message", "").format(
     direction=direction
 )
 ```
+
+---
+
+## Refactoring Steps
+
+When refactoring a service:
+
+1. **Identify service type**
+   - Agentic loop (multiple Claude calls) → `ai_agents/`
+   - Single AI call → `ai_services/`
+   - Non-AI processing → keep in current location
+
+2. **Check for duplicated utilities**
+   - `_get_source_content` → use `source_content_utils.get_source_content()`
+   - Data transformation logic → extract to `utils/`
+
+3. **Externalize to prompt config**
+   - User message templates → `user_message` in JSON
+   - Type mappings → `some_types` dict in JSON
+
+4. **Extract tool handlers** (for agents only)
+   - Move to `tool_executors/{name}_executor.py`
+   - Keep agent as orchestration only
+
+5. **Update REFACTORING.md**
+   - Add to Refactored Agents/Services table
+   - Add any new shared utilities
