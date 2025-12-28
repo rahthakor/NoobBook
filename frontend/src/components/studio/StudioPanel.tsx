@@ -156,7 +156,6 @@ export const StudioPanel: React.FC<StudioPanelProps> = ({
     setViewingWebsiteJob,
     loadSavedJobs: loadSavedWebsiteJobs,
     handleWebsiteGeneration,
-    openWebsite,
     downloadWebsite,
   } = useWebsiteGeneration(projectId);
 

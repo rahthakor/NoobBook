@@ -65,7 +65,7 @@ export const ProjectHeader: React.FC<ProjectHeaderProps> = ({
   onDelete,
   costsVersion,
 }) => {
-  const { toasts, dismissToast, success, error } = useToast();
+  const { toasts, dismissToast, error } = useToast();
 
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
   const [settingsDialogOpen, setSettingsDialogOpen] = React.useState(false);

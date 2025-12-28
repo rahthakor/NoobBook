@@ -184,7 +184,7 @@ export const SourceItem: React.FC<SourceItemProps> = ({
             />
           </button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="start">
+        <DropdownMenuContent align="start" onClick={(e) => e.stopPropagation()}>
           {/* Retry/Start option - for error or uploaded (waiting) state */}
           {(source.status === 'error' || isWaitingToProcess) && (
             <DropdownMenuItem onClick={() => onRetryProcessing(source.id)}>
