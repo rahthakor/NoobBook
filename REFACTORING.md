@@ -133,6 +133,7 @@ When refactoring an agent:
 | `component_agent_service.py` | 420 lines | 193 lines | `component_tool_executor.py` (175 lines) | Done |
 | `email_agent_service.py` | 498 lines | 200 lines | `email_tool_executor.py` (260 lines) | Done |
 | `prd_agent_service.py` | 489 lines | 205 lines | `prd_tool_executor.py` (250 lines) | Done |
+| `presentation_agent_service.py` | 543 lines | 210 lines | `presentation_tool_executor.py` (300 lines) | Done |
 
 ---
 
@@ -148,7 +149,7 @@ When refactoring an agent:
 
 | Utility | Location | Purpose | Used By |
 |---------|----------|---------|---------|
-| `get_source_content()` | `app/utils/source_content_utils.py` | Load source content with smart sampling for large sources | blog_agent, website_agent, wireframe_service, marketing_strategy_agent, component_agent, email_agent |
+| `get_source_content()` | `app/utils/source_content_utils.py` | Load source content with smart sampling for large sources | blog_agent, website_agent, wireframe_service, marketing_strategy_agent, component_agent, email_agent, prd_agent, presentation_agent |
 | `get_source_name()` | `app/utils/source_content_utils.py` | Get source name by ID | (available) |
 | `convert_to_excalidraw_elements()` | `app/utils/excalidraw_utils.py` | Convert simplified elements to Excalidraw format | wireframe_service |
 
