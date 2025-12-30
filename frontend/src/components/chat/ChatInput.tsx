@@ -68,6 +68,8 @@ export const ChatInput: React.FC<ChatInputProps> = ({
           title={
             !transcriptionConfigured
               ? 'Set up ElevenLabs API key in settings'
+              : sending
+              ? 'Wait for response to complete'
               : isRecording
               ? 'Click to stop recording'
               : 'Click to start recording'
@@ -76,7 +78,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
             isRecording
               ? 'bg-red-500 text-white animate-pulse'
               : 'text-muted-foreground hover:text-foreground'
-          } ${!transcriptionConfigured ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+          } ${sending || !transcriptionConfigured ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
         >
           <Microphone size={18} />
         </button>

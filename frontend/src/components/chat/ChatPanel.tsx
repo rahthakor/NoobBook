@@ -40,6 +40,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ projectId, projectName, so
   // Sources state for header display
   const [sources, setSources] = useState<Source[]>([]);
 
+
   // Voice recording hook
   const {
     isRecording,
@@ -376,7 +377,11 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ projectId, projectName, so
         onShowChatList={() => setShowChatList(true)}
       />
 
-      <ChatMessages messages={activeChat?.messages || []} sending={sending} projectId={projectId} />
+      <ChatMessages
+        messages={activeChat?.messages || []}
+        sending={sending}
+        projectId={projectId}
+      />
 
       <ChatInput
         message={message}

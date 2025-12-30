@@ -24,6 +24,7 @@ export const StudioToolItem: React.FC<StudioToolItemProps> = ({
   const Icon = option.icon;
   const isActive = signals.length > 0;
 
+  
   return (
     <Button
       variant="outline"

@@ -22,7 +22,7 @@
 
 <p align="center">
   <a href="https://www.delta.exchange">
-    <img src="assets/delta_exchange.png" alt="Delta Exchange" width="300">
+    <img src="assets/delta_exchange.svg" alt="Delta Exchange" width="300">
   </a>
 </p>
 

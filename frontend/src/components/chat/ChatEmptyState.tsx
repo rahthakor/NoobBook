@@ -14,7 +14,7 @@ interface ChatEmptyStateProps {
 }
 
 export const ChatEmptyState: React.FC<ChatEmptyStateProps> = ({
-  projectName,
+  projectName: _projectName,
   onNewChat,
 }) => {
   return (

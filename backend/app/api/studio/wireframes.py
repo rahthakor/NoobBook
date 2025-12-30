@@ -16,7 +16,7 @@ import uuid
 from flask import jsonify, request, current_app
 from app.api.studio import studio_bp
 from app.services.studio_services import studio_index_service
-from app.services.studio_services.wireframe_service import wireframe_service
+from app.services.ai_services.wireframe_service import wireframe_service
 from app.services.source_services import source_index_service
 from app.services.background_services.task_service import task_service
 

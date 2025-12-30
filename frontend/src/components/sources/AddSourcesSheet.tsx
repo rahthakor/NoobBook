@@ -56,11 +56,11 @@ export const AddSourcesSheet: React.FC<AddSourcesSheetProps> = ({
 
           <Tabs defaultValue="upload" className="w-full">
             <TabsList className="grid w-full grid-cols-5">
-              <TabsTrigger value="upload">Upload</TabsTrigger>
-              <TabsTrigger value="link">Link</TabsTrigger>
-              <TabsTrigger value="paste">Paste</TabsTrigger>
-              <TabsTrigger value="drive">Drive</TabsTrigger>
-              <TabsTrigger value="research">Research</TabsTrigger>
+              <TabsTrigger value="upload" className="hover:bg-[#e8e7e4] data-[state=active]:bg-[#dcdbd8]">Upload</TabsTrigger>
+              <TabsTrigger value="link" className="hover:bg-[#e8e7e4] data-[state=active]:bg-[#dcdbd8]">Link</TabsTrigger>
+              <TabsTrigger value="paste" className="hover:bg-[#e8e7e4] data-[state=active]:bg-[#dcdbd8]">Paste</TabsTrigger>
+              <TabsTrigger value="drive" className="hover:bg-[#e8e7e4] data-[state=active]:bg-[#dcdbd8]">Drive</TabsTrigger>
+              <TabsTrigger value="research" className="hover:bg-[#e8e7e4] data-[state=active]:bg-[#dcdbd8]">Research</TabsTrigger>
             </TabsList>
 
             <TabsContent value="upload" className="mt-6">

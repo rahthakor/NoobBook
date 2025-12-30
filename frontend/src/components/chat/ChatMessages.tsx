@@ -7,15 +7,22 @@
  * - Shows a loading indicator when waiting for AI response
  */
 
-import React, { useRef, useEffect, useMemo } from 'react';
+import React, { useRef, useEffect, useMemo, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { User, Robot, CircleNotch, FileText } from '@phosphor-icons/react';
+import { User, Robot, CircleNotch, FileText, Copy, Check, DownloadSimple } from '@phosphor-icons/react';
 import type { Message } from '../../lib/api/chats';
 import { parseCitations } from '../../lib/citations';
 import { CitationBadge } from './CitationBadge';
 import { Separator } from '../ui/separator';
 import { sourcesAPI } from '../../lib/api/sources';
+import { Button } from '../ui/button';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../ui/tooltip';
 
 interface ChatMessagesProps {
   messages: Message[];
@@ -179,6 +186,95 @@ interface AIMessageProps {
   projectId: string;
 }
 
+/**
+ * Message Action Buttons Component
+ * Educational Note: Copy and Download buttons for AI messages,
+ * similar to ChatGPT/Gemini UX pattern.
+ */
+interface MessageActionsProps {
+  content: string;
+}
+
+const MessageActions: React.FC<MessageActionsProps> = ({ content }) => {
+  const [copied, setCopied] = useState(false);
+
+  /**
+   * Copy message content to clipboard
+   * Educational Note: Uses modern Clipboard API with visual feedback
+   */
+  const handleCopy = async () => {
+    try {
+      // Remove citation markers for cleaner copied text
+      const cleanContent = content.replace(/\[\[cite:[^\]]+\]\]/g, '');
+      await navigator.clipboard.writeText(cleanContent);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
+
+  /**
+   * Download message as markdown file
+   * Educational Note: Creates a blob and triggers download
+   */
+  const handleDownload = () => {
+    // Remove citation markers for cleaner downloaded text
+    const cleanContent = content.replace(/\[\[cite:[^\]]+\]\]/g, '');
+    const blob = new Blob([cleanContent], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `response-${Date.now()}.md`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <TooltipProvider>
+      <div className="flex items-center gap-1 mt-2">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleCopy}
+              className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground"
+            >
+              {copied ? (
+                <Check size={16} weight="bold" className="text-green-600" />
+              ) : (
+                <Copy size={16} weight="bold" />
+              )}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="bottom">
+            <p className="text-xs">{copied ? 'Copied!' : 'Copy'}</p>
+          </TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleDownload}
+              className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground"
+            >
+              <DownloadSimple size={16} weight="bold" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="bottom">
+            <p className="text-xs">Download</p>
+          </TooltipContent>
+        </Tooltip>
+      </div>
+    </TooltipProvider>
+  );
+};
+
 const AIMessage: React.FC<AIMessageProps> = ({ content, projectId }) => {
   // Parse citations from content to get citation numbers
   const { uniqueCitations, markerToNumber } = useMemo(
@@ -301,6 +397,9 @@ const AIMessage: React.FC<AIMessageProps> = ({ content, projectId }) => {
               </div>
             </>
           )}
+
+          {/* Action buttons - Copy & Download */}
+          <MessageActions content={content} />
         </div>
       </div>
     </div>
@@ -330,7 +429,11 @@ const LoadingIndicator: React.FC = () => (
   </div>
 );
 
-export const ChatMessages: React.FC<ChatMessagesProps> = ({ messages, sending, projectId }) => {
+export const ChatMessages: React.FC<ChatMessagesProps> = ({
+  messages,
+  sending,
+  projectId,
+}) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -391,7 +494,10 @@ export const ChatMessages: React.FC<ChatMessagesProps> = ({ messages, sending, p
             {msg.role === 'user' ? (
               <UserMessage content={msg.content} />
             ) : (
-              <AIMessage content={msg.content} projectId={projectId} />
+              <AIMessage
+                content={msg.content}
+                projectId={projectId}
+              />
             )}
             {msg.error && (
               <p className="text-xs text-destructive text-center mt-1">
